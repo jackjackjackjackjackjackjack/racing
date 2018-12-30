@@ -49,6 +49,7 @@ def main():
     c = db.cursor()
 
     win=[]
+    lose=[]
     quinella = []
     place = []
     none_flag=0
@@ -104,6 +105,7 @@ def main():
         quinella_odds = arr[0][9]
 
 
+
         #none,nanがあるならとばす。
         for i in range (len(arr)):
             for j in range (len(arr[0])):
@@ -131,15 +133,27 @@ def main():
     #        print(arg_sorted[:, :3])
         x=np.array(res).reshape((1, -1))[0]
         # 一着がほかより抜けている時のみ買う
-##        if ((x[np.argsort(x)[1]] - x[np.argsort(x)[0]]) < 0.001):
-##            continue
+#        if ((x[np.argsort(x)[1]] - x[np.argsort(x)[0]]) < 0.001):
+#            continue
 #        for i in range(len(x)):
 #            print (np.argsort(x)[i]+1,"-", x[np.argsort(x)[i]])
+
+        #　狙うオッズが微妙ならとばす。
+        for j in range(len(copy_arr)):
+            if (copy_arr[j][0] == np.argsort(x)[0] + 1):
+                if(copy_arr[j][4] >= 50 or copy_arr[j][4] < 2):
+                    continue
+
+
         if(np.argsort(x)[0]+1 == winner):
             win.append(winner_odds)
 #            print(race_id,np.argsort(x)[0]+1,winner_odds)
         else:
             win.append(0)
+            for j in range (len(copy_arr)):
+                if (copy_arr[j][0] == np.argsort(x)[0]+1):
+                    lose.append(copy_arr[j][4])
+
         if(((np.argsort(x)[0]+1 == winner) and (np.argsort(x)[1]+1 == second)) or ((np.argsort(x)[0]+1 == second) and (np.argsort(x)[1]+1 == winner))):
             quinella.append(quinella_odds)
         else:
@@ -148,6 +162,7 @@ def main():
             if(np.argsort(x)[0]+1 == copy_arr[i][0]):
                 place.append(copy_arr[i][10])
     print(win)
+    print(lose)
     print(place)
     print(quinella)
     print("単勝\n")
