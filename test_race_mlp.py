@@ -87,6 +87,9 @@ def main():
     #    img_array = model.xp.asarray(img_array, dtype=model.xp.float32).reshape(1,-1)
         arr = df.values
 
+        #あいてるid用
+#        if(len(arr)==0):
+#            continue
 
         for i in range(len(arr)):
             if ((isinstance(arr[i][6], int) or isinstance(arr[i][6], float)) == False):
@@ -133,16 +136,23 @@ def main():
     #        print(arg_sorted[:, :3])
         x=np.array(res).reshape((1, -1))[0]
         # 一着がほかより抜けている時のみ買う
-#        if ((x[np.argsort(x)[1]] - x[np.argsort(x)[0]]) < 0.001):
-#            continue
+        if ((x[np.argsort(x)[1]] - x[np.argsort(x)[0]]) < 0.001):
+            continue
 #        for i in range(len(x)):
 #            print (np.argsort(x)[i]+1,"-", x[np.argsort(x)[i]])
 
+        # 一二着がほかより抜けている時のみ買う
+#        if ((x[np.argsort(x)[2]] - x[np.argsort(x)[1]]) < 0.001):
+#            continue
+
         #　狙うオッズが微妙ならとばす。
+        continue_flag=0
         for j in range(len(copy_arr)):
             if (copy_arr[j][0] == np.argsort(x)[0] + 1):
                 if(copy_arr[j][4] >= 50 or copy_arr[j][4] < 2):
-                    continue
+                    continue_flag = 1
+        if(continue_flag == 1):
+            continue
 
 
         if(np.argsort(x)[0]+1 == winner):
@@ -165,11 +175,11 @@ def main():
     print(lose)
     print(place)
     print(quinella)
-    print("単勝\n")
+    print("単勝")
     print("回収率 = ",sum(win)/len(win)*100," 的中率 = ",(1-win.count(0)/len(win))*100)
-    print("複勝\n")
+    print("\n複勝")
     print("回収率 = ", sum(place) / len(place) , " 的中率 = ", (1 - place.count(0) / len(place)) * 100)
-    print("馬連\n")
+    print("\n馬連")
     print("回収率 = ",sum(quinella)/len(quinella)," 的中率 = ",(1-quinella.count(0)/len(quinella))*100)
 
 

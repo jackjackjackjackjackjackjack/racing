@@ -117,6 +117,12 @@ def main():
 #    test = test.astype(np.float32)
     train, test = datasets.split_dataset_random(datasets.TupleDataset(allX, allY), int(inputdataall.shape[0] * .7))
 
+
+    #全てtrainにぶちこむ
+    train, test2 = datasets.split_dataset_random(datasets.TupleDataset(allX, allY), int(inputdataall.shape[0] * .999999))
+
+
+
     parser = argparse.ArgumentParser(description='Chainer example: RACE')
     parser.add_argument('--batchsize', '-b', type=int, default=100,
                         help='Number of images in each mini-batch')

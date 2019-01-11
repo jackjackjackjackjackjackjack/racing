@@ -1,6 +1,9 @@
+
 ## make inputdata 
+
 # create_inputdata.sql
-# insert_imputdata.sql
+
+# insert_inputdata.sql
 
 ## mlp
 
